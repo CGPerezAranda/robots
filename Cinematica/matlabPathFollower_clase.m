@@ -14,16 +14,16 @@ clc;
 % Path waypoints
 %path = [2.00 1.00; 1.25 1.75; 5.25 8.25; 7.25 8.75; 11.75 10.75; 12.00 10.00]; % segments
 %path = [4.00 1.00; 2.00 1.00; 1.25 1.75; 5.25 8.25; 7.25 8.75; 11.75 10.75; 12.00 10.00; 12.00 6.00; 8.00 6.00; 11.00 7.50]; % sharp segments
-path = [2.00 6.00; 4.00 6.00; 6.00 6.00; 8.00 6.00; 10.00 6.00; 12.00 6.00]; % horizontal line
+%path = [2.00 6.00; 4.00 6.00; 6.00 6.00; 8.00 6.00; 10.00 6.00; 12.00 6.00]; % horizontal line
 %path = [6.00 2.00; 6.00 4.00; 6.00 6.00; 6.00 8.00; 6.00 10.00; 6.00 12.00]; % vertical line
-%path = [0.00 0.00; 2.00 2.00; 4.00 4.00; 6.00 6.00; 8.00 8.00; 10.00 10.00; 12.00 12.00]; % 45º line
+path = [0.00 0.00; 2.00 2.00; 4.00 4.00; 6.00 6.00; 8.00 8.00; 10.00 10.00; 12.00 12.00]; % 45º line
 
 % Initial and goal robot locations
 robotInitialLocation = path(1,:);
 robotGoal = path(end,:);
 
 % Initial orientation
-initialOrientation = 0; % orientation = angle between robot axe and positive X axe, counterclockwise
+initialOrientation = 0.785398; % orientation = angle between robot axe and positive X axe, counterclockwise
 
 % Current robot pose
 robotCurrentPose = [robotInitialLocation initialOrientation]';
@@ -58,7 +58,7 @@ while (distanceToGoal > goalRadius)
     % kinematic model: computes the new robotCurrentPose from the old robotCurrent Pose (and velocities)
     % robotCurrentPose tiene 3 componentes, x, y y tita
     %robotCurrentPose = kinematicModel(robotCurrentPose,velocities)';
-    velocities = [0.5,0.5,0.5];
+    velocities = [v,0,0];
     robotCurrentPose = constantModel(robotCurrentPose, velocities,sampleTime);
     
     % Re-compute the distance to the goal     
@@ -87,19 +87,17 @@ while (distanceToGoal > goalRadius)
 end
 
 function newPose = constantModel(robotCurrentPose, velocities, sampleTime)
-    % descomponer xinit y vel en sus componentes
-    %posiciones
     x = robotCurrentPose(1);
     y = robotCurrentPose(2);
     tita = robotCurrentPose(3);
-    %velocidades
     vx = velocities(1);
     vy = velocities(2);
     vtita = velocities(3);
-   
-    % Compute the new robotCurrentPose from the old robotCurrent Pose (and velocities)
+
     newPose = robotCurrentPose;
     newPose(1) = x + vx * cos(tita) * sampleTime - vy * sin(tita) * sampleTime;
     newPose(2) = y + vx * sin(tita) * sampleTime + vy * cos(tita) * sampleTime;
     newPose(3) = tita + vtita * sampleTime;
 end
+
+
