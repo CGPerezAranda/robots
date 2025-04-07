@@ -1,0 +1,90 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\geometry{a4paper, margin=1in}
+
+\title{Programación de robots - cinemática - apuntes de classe}
+\author{Carlos Pérez Aranda}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+En este documento se presentan los conceptos fundamentales de la cinemática aplicada a la programación de robots móviles.
+Se abordan las definiciones de grados de libertad desde perspectivas matemáticas e ingenieriles, 
+así como la clasificación de los robots en función de su holonomía. Además, se introduce un modelo 
+cinemático básico de velocidad constante, destacando sus limitaciones y aplicaciones prácticas. Estos apuntes 
+están orientados a proporcionar una base teórica para el diseño y análisis de sistemas robóticos móviles.
+\end{abstract}
+
+\section{Introducción}
+El modelo puede seer Sencillo o complicado.
+
+El primero que vamos a ver es muy sencillo pero tidene problemas.
+El mundo real tiene inexactitudes, como el radio de la rueda, el peso del robot, la fricción, etc. En la realidad el robot
+puede no estar en su mejor momento, baches en el suelo, eso va a introducir errores en la cinemática.
+Los grados de libertad es cuantos motoress y articulaciones tenemos.
+2 definiciones matem-aticas, mínimo número de valores independientes definen la posición de un objeto en el espacio. Coche X,Y, rotación.
+Cuadricóptero, 3 ejes de rotación y 3 de traslación. 6 grados de libertad.
+
+Definición "ingenieril": número de motores y articulaciones que tiene el robot.
+Coche, 2 grados de libertad, 2 motores, 2 ruedas. Un motor para cada rueda.
+Cuadricóptero, 4 grados de libertad.
+
+Dependiendo de la relación entre los grados de libertad matemáticos A e ingenieriles B.
+\begin{itemize}
+    \item $A = B$: vehículo holónomo.
+    \item $A > B$: vehículo no holónomo.
+    \item $A < B$: vehículo no redundante.
+\end{itemize}
+
+Robot con ruedas holónomo lleva ruedas suecas, que pueden girar en cualquier dirección. BB-8 es holónomo.
+
+
+
+\section{Modelos cinemáticos para robots móviles}
+\subsection{Modelo cinemático de velocidad constante}
+Muy simple, puede aplicarse sin sensor de odometría.
+
+No se adapta a caminos con cambios abruptos de dirección, como un giro brusco.
+
+Escribe aquí el desarrollo del contenido.
+
+vk = vk-1.
+
+El prototipo de la función será el siguiente:
+
+function [newPose] = constantSpeedKinematics(xinit,v,deltat)
+
+Es un modelo no homolónomo.
+
+function [derPose] = diffDriveKinematics(tita,ur,ul,L,r)
+
+\subsection{Modelo diferencial}
+Se usa en los legos entre otros.
+El estado de robot corresponde a su pose y el vector de acción es las velocidaddes angulares de las ruedas.
+
+\subsection{Modelo de la bicicleta}
+Estamos suponiendo que las ruedas son rígidas y tienen solo un punto de contacto con el suelo.
+Hay rozamiento para evitar deslizamientos.
+Rueda trasera fija, rueda delantera libre.
+No desliza lateralmente.
+Tenemos dos ángulos, la orientación de la bicicleta y la orientación de la rueda delantera.
+
+Si la vel lineal es 0 no hay cambio de orientación.
+Si el ángulo de la rueda es pi medios entramos en una indefinición.
+
+function [derPose] = bikeKinematics(tita,v,L,gamma)
+
+\section{Conclusión}
+Escribe aquí la conclusión.
+
+\end{document}
